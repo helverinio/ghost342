@@ -26,7 +26,7 @@ services:
         envVarKey: MYSQL_PASSWORD
 
 - type: pserv
-  name: mysql
+  name: mysql342
   plan: standard
   env: docker
   repo: https://github.com/render-examples/mysql
