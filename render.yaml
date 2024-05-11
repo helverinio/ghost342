@@ -1,6 +1,6 @@
 services:
 - type: web
-  name: ghost
+  name: ghost342
   env: docker
   autoDeploy: false
   disk:
