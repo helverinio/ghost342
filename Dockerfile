@@ -96,7 +96,7 @@ WORKDIR $GHOST_INSTALL
 VOLUME $GHOST_CONTENT
 
 COPY docker-entrypoint.sh /usr/local/bin
-ENTRYPOINT ["start.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 2368
 CMD ["node", "current/index.js"]
