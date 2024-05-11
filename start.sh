@@ -1,7 +1,14 @@
 #!/bin/bash
-set -o errexit
+set -e
 
-baseDir="$GHOST_INSTALL/content.orig"
+# allow the container to be started with `--user`
+if [[ "$*" == node*current/index.js* ]] && [ "$(id -u)" = '0' ]; then
+	find "$GHOST_CONTENT" \! -user node -exec chown node '{}' +
+	exec gosu node "$BASH_SOURCE" "$@"
+fi
+
+if [[ "$*" == node*current/index.js* ]]; then
+	baseDir="$GHOST_INSTALL/content.orig"
 	for src in "$baseDir"/*/ "$baseDir"/themes/*; do
 		src="${src%/}"
 		target="$GHOST_CONTENT/${src#$baseDir/}"
@@ -10,8 +17,6 @@ baseDir="$GHOST_INSTALL/content.orig"
 			tar -cC "$(dirname "$src")" "$(basename "$src")" | tar -xC "$(dirname "$target")"
 		fi
 	done
+fi
 
-# update the URL
-node updateConfig.js
-
-node current/index.js
+exec "$@"
